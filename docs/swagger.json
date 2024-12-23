@@ -620,7 +620,7 @@
         }
       }
     },
-    "/auth//login": {
+    "/auth/login": {
       "post": {
         "tags": [
           "Auth"
@@ -709,7 +709,7 @@
         }
       }
     },
-    "/auth//refresh": {
+    "/auth/refresh": {
       "post": {
         "tags": [
           "Auth"
@@ -794,7 +794,7 @@
         }
       }
     },
-    "/auth//logout": {
+    "/auth/logout": {
       "post": {
         "tags": [
           "Auth"
@@ -870,7 +870,7 @@
         }
       }
     },
-    "/auth//send-reset-email": {
+    "/auth/send-reset-email": {
       "post": {
         "tags": [
           "Auth"
@@ -943,7 +943,7 @@
         }
       }
     },
-    "/auth//reset-pwd": {
+    "/auth/reset-pwd": {
       "post": {
         "tags": [
           "Auth"
@@ -1025,7 +1025,7 @@
         }
       }
     },
-    "/auth//get-oauth-url": {
+    "/auth/get-oauth-url": {
       "get": {
         "tags": [
           "Auth"
@@ -1079,7 +1079,7 @@
         }
       }
     },
-    "/auth//confirm-oauth": {
+    "/auth/confirm-oauth": {
       "post": {
         "tags": [
           "Auth"
