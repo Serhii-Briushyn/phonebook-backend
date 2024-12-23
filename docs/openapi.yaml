@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   version: 1.0.0
-  title: Contacts API
+  title: PhoneBook API
   description: API documentation for the Contacts application. Manage user contacts and authentication, including endpoints for creating, retrieving, updating, and deleting contacts.
   license:
     name: Apache 2.0
@@ -12,8 +12,7 @@ tags:
   - name: Auth
     description: Authentication and token management endpoints.
 servers:
-  - url: http://127.0.0.1:3000
-  - url: https://nodejs-hw-mongodb-n160.onrender.com
+  - url: https://phonebook-backend-orpb.onrender.com
 paths:
   /contacts:
     get:
