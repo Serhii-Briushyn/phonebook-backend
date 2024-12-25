@@ -29,14 +29,14 @@ export const registerUserController = async (req, res) => {
   res.status(201).json({
     status: 201,
     message: "Successfully registered a user!",
-    data: user,
+    data: { user },
   });
 };
 
 //--------------------loginUserController--------------------
 
 export const loginUserController = async (req, res) => {
-  const session = await loginUserService(req.body);
+  const { session, user } = await loginUserService(req.body);
 
   setupSession(res, session);
 
@@ -45,6 +45,7 @@ export const loginUserController = async (req, res) => {
     message: "Successfully logged in an user!",
     data: {
       accessToken: session.accessToken,
+      user,
     },
   });
 };
@@ -52,7 +53,7 @@ export const loginUserController = async (req, res) => {
 //--------------------refreshUserSessionController--------------------
 
 export const refreshUserSessionController = async (req, res) => {
-  const session = await refreshUsersSessionService({
+  const { session, user } = await refreshUsersSessionService({
     sessionId: req.cookies.sessionId,
     refreshToken: req.cookies.refreshToken,
   });
@@ -64,6 +65,7 @@ export const refreshUserSessionController = async (req, res) => {
     message: "Successfully refreshed a session!",
     data: {
       accessToken: session.accessToken,
+      user,
     },
   });
 };

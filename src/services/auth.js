@@ -64,7 +64,16 @@ export const loginUserService = async (userData) => {
 
   const newSession = createSession(user._id);
 
-  return await SessionsCollection.create(newSession);
+  const createdSession = await SessionsCollection.create(newSession);
+
+  return {
+    session: createdSession,
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+    },
+  };
 };
 
 //--------------------refreshUsersSessionService--------------------
@@ -89,11 +98,26 @@ export const refreshUsersSessionService = async ({
     throw createHttpError(401, "Session token expired");
   }
 
-  const newSession = createSession(session.userId);
-
   await SessionsCollection.deleteOne({ _id: sessionId, refreshToken });
 
-  return await SessionsCollection.create(newSession);
+  const user = await UsersCollection.findOne({ _id: session.userId });
+
+  if (!user) {
+    throw createHttpError(404, "User not found");
+  }
+
+  const newSession = createSession(session.userId);
+
+  const createdSession = await SessionsCollection.create(newSession);
+
+  return {
+    session: createdSession,
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+    },
+  };
 };
 
 //--------------------logoutUserService--------------------
