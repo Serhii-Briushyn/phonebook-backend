@@ -18,7 +18,12 @@ export const setupServer = () => {
     express.json({ type: ["application/json", "application/vnd.api+json"] }),
   );
 
-  app.use(cors({ origin: "*", credentials: true }));
+  app.use(
+    cors({
+      origin: "https://phonebook-frontend-self.vercel.app/login",
+      credentials: true,
+    }),
+  );
 
   app.use(cookieParser());
 
