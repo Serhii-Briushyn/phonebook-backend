@@ -20,7 +20,7 @@ export const setupServer = () => {
 
   app.use(
     cors({
-      origin: "https://phonebook-frontend-self.vercel.app/login",
+      origin: "https://phonebook-frontend-self.vercel.app",
       credentials: true,
     }),
   );
