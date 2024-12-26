@@ -23,7 +23,7 @@ requestBody:
           refreshToken:
             type: string
             description: Valid refresh token for session renewal.
-            example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvbiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+            example: "pJK+TbhNzRIz1BVL9rf4JXrvuYM4ecbdaoRf+22v"
 responses:
   "200":
     description: Successfully refreshed user session.
@@ -47,8 +47,10 @@ responses:
               properties:
                 accessToken:
                   type: string
-                  description: New access token.
-                  example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzRjN2VhMTFhNzU3NTBmNWY5Yjg2ZDQiLCJpYXQiOjE2ODMxMTY0MjEsImV4cCI6MTY4MzEyMDAyMX0.3Lxq8uXKAHI7XURvLPrwt_wP1Yqluxgpqkg1P3Uztm4"
+                  description: Access token.
+                  example: "pJK+TbhNzRIz1BVL9rf4JXrvuYM4ecbdaoRf+22v"
+                user:
+                  $ref: ../../../components/schemas/user.yaml
   "401":
     $ref: ../../../components/responses/401.yaml
   "500":

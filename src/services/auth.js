@@ -68,11 +68,7 @@ export const loginUserService = async (userData) => {
 
   return {
     session: createdSession,
-    user: {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-    },
+    user,
   };
 };
 
@@ -112,11 +108,7 @@ export const refreshUsersSessionService = async ({
 
   return {
     session: createdSession,
-    user: {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-    },
+    user,
   };
 };
 

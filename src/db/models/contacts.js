@@ -6,7 +6,7 @@ const contactsSchema = new Schema(
       type: String,
       required: true,
     },
-    phoneNumber: {
+    number: {
       type: String,
       required: true,
     },
@@ -20,7 +20,7 @@ const contactsSchema = new Schema(
     contactType: {
       type: String,
       enum: ["work", "home", "personal"],
-      required: true,
+      required: false,
       default: "personal",
     },
     userId: {

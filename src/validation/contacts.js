@@ -3,7 +3,7 @@ import Joi from "joi";
 export const createContactSchema = Joi.object({
   name: Joi.string().min(3).max(20).required().label("Name"),
 
-  phoneNumber: Joi.string()
+  number: Joi.string()
     .pattern(/^\+?[0-9\s-]+$/)
     .min(3)
     .max(20)
@@ -16,14 +16,13 @@ export const createContactSchema = Joi.object({
 
   contactType: Joi.string()
     .valid("work", "home", "personal")
-    .required()
     .label("Contact type"),
 });
 
 export const updateContactSchema = Joi.object({
   name: Joi.string().min(3).max(20).optional().label("Name"),
 
-  phoneNumber: Joi.string()
+  number: Joi.string()
     .pattern(/^\+?[0-9\s-]+$/)
     .min(3)
     .max(20)
