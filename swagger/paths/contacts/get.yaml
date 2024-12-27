@@ -61,7 +61,7 @@ parameters:
       example: true
 responses:
   "200":
-    description: Successfully retrieved user contact list.
+    description: Successfully retrieved the contact list.
     content:
       application/json:
         schema:
@@ -88,7 +88,7 @@ responses:
                 - hasPreviousPage
                 - hasNextPage
               properties:
-                data:
+                contacts:
                   type: array
                   description: List of contacts matching filters, sorted, and paginated.
                   items:

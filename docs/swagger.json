@@ -119,7 +119,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved user contact list.",
+            "description": "Successfully retrieved the contact list.",
             "content": {
               "application/json": {
                 "schema": {
@@ -150,7 +150,7 @@
                         "hasNextPage"
                       ],
                       "properties": {
-                        "data": {
+                        "contacts": {
                           "type": "array",
                           "description": "List of contacts matching filters, sorted, and paginated.",
                           "items": {
@@ -267,7 +267,7 @@
         },
         "responses": {
           "201": {
-            "description": "Successfully created contact.",
+            "description": "Successfully created a contact.",
             "content": {
               "application/json": {
                 "schema": {
@@ -334,7 +334,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved user contact by ID.",
+            "description": "Successfully retrieved a contact by ID.",
             "content": {
               "application/json": {
                 "schema": {
@@ -351,7 +351,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Successfully found contact with ID 674c7ea11a75750f5f9b86d4!"
+                      "example": "Successfully found the contact with ID 674c7ea11a75750f5f9b86d4!"
                     },
                     "data": {
                       "type": "object",
@@ -449,7 +449,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully updated contact.",
+            "description": "Successfully updated a contact.",
             "content": {
               "application/json": {
                 "schema": {
@@ -466,7 +466,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Successfully patched a contact!"
+                      "example": "Successfully updated the contact!"
                     },
                     "data": {
                       "type": "object",
@@ -517,7 +517,33 @@
         ],
         "responses": {
           "204": {
-            "description": "Successfully deleted contact. No content returned."
+            "description": "Successfully deleted a contact.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 204
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully deleted the contact!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/contact"
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
             "$ref": "#/components/responses/400"
