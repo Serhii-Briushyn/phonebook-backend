@@ -13,10 +13,12 @@ import { generateAuthUrl } from "../utils/googleOAuth2.js";
 const setupSession = (res, session) => {
   res.cookie("refreshToken", session.refreshToken, {
     httpOnly: true,
+    sameSite: "None",
     expires: new Date(Date.now() + THIRTY_DAYS),
   });
   res.cookie("sessionId", session._id, {
     httpOnly: true,
+    sameSite: "None",
     expires: new Date(Date.now() + THIRTY_DAYS),
   });
 };
