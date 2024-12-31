@@ -27,7 +27,17 @@ requestBody:
             example: "SecurePass123!"
 responses:
   "200":
-    description: Successfully user logged.
+    description: Successfully logged in user. Access token is returned in the response body, and refresh token and session ID are set as HttpOnly cookies.
+    headers:
+      Set-Cookie:
+        description: Cookies sent in the response.
+        schema:
+          type: string
+        examples:
+          refreshToken:
+            value: "refreshToken=6IaBSvWhDkvVDOtRX0GGnFlf04iYvTM2C1Sw%2FhTl; Path=/; Expires=Wed, 29 Jan 2025 17:17:06 GMT; HttpOnly; Secure; SameSite=None"
+          sessionId:
+            value: "sessionId=j%3A%226772d59258e8aa0c0aaa751d%22; Path=/; Expires=Wed, 29 Jan 2025 17:17:06 GMT; HttpOnly; Secure; SameSite=None"
     content:
       application/json:
         schema:
@@ -48,7 +58,7 @@ responses:
               properties:
                 accessToken:
                   type: string
-                  description: Access token.
+                  description: Access token for accessing protected resources.
                   example: "pJK+TbhNzRIz1BVL9rf4JXrvuYM4ecbdaoRf+22v"
                 user:
                   $ref: ../../../components/schemas/user.yaml

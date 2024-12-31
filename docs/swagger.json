@@ -664,7 +664,23 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully user logged.",
+            "description": "Successfully logged in user. Access token is returned in the response body, and refresh token and session ID are set as HttpOnly cookies.",
+            "headers": {
+              "Set-Cookie": {
+                "description": "Cookies sent in the response.",
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
+                  "refreshToken": {
+                    "value": "refreshToken=6IaBSvWhDkvVDOtRX0GGnFlf04iYvTM2C1Sw%2FhTl; Path=/; Expires=Wed, 29 Jan 2025 17:17:06 GMT; HttpOnly; Secure; SameSite=None"
+                  },
+                  "sessionId": {
+                    "value": "sessionId=j%3A%226772d59258e8aa0c0aaa751d%22; Path=/; Expires=Wed, 29 Jan 2025 17:17:06 GMT; HttpOnly; Secure; SameSite=None"
+                  }
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
@@ -688,7 +704,7 @@
                       "properties": {
                         "accessToken": {
                           "type": "string",
-                          "description": "Access token.",
+                          "description": "Access token for accessing protected resources.",
                           "example": "pJK+TbhNzRIz1BVL9rf4JXrvuYM4ecbdaoRf+22v"
                         },
                         "user": {
@@ -723,42 +739,63 @@
         ],
         "summary": "Refresh user session",
         "operationId": "refreshUserSession",
-        "description": "Refreshes the user session and generates a new access token.",
+        "description": "Refreshes the user session, generates a new access token, and updates cookies.",
         "security": [
           {
             "bearerAuth": []
           }
         ],
-        "requestBody": {
-          "description": "Refresh token and session ID.",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "sessionId",
-                  "refreshToken"
-                ],
-                "properties": {
-                  "sessionId": {
-                    "type": "string",
-                    "description": "ID of the current user session.",
-                    "example": "674c7ea11a75750f5f9b86d4"
-                  },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "Bearer token containing the current (possibly expired) access token.",
+            "schema": {
+              "type": "string",
+              "example": "Bearer jrHzFR20mDmYP+VB9KZTEslEjFyFkmoDFnOOZPUcU"
+            }
+          },
+          {
+            "name": "sessionId",
+            "in": "cookie",
+            "required": true,
+            "description": "HttpOnly cookie containing the session ID for the current user session. It is used to identify the session in the database.",
+            "schema": {
+              "type": "string",
+              "example": "j%3A%226772d59258e8aa0c0aaa751d%22"
+            }
+          },
+          {
+            "name": "refreshToken",
+            "in": "cookie",
+            "required": true,
+            "description": "HttpOnly cookie containing the refresh token for generating a new access token. It is securely stored and not accessible via JavaScript.",
+            "schema": {
+              "type": "string",
+              "example": "6IaBSvWhDkvVD0tRX0GGnFlf04iYvTM2C1Sw%2FhTl"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully refreshed user session. New cookies are set in the response.",
+            "headers": {
+              "Set-Cookie": {
+                "description": "Updated cookies with new `refreshToken` and `sessionId`.",
+                "schema": {
+                  "type": "string"
+                },
+                "examples": {
                   "refreshToken": {
-                    "type": "string",
-                    "description": "Valid refresh token for session renewal.",
-                    "example": "pJK+TbhNzRIz1BVL9rf4JXrvuYM4ecbdaoRf+22v"
+                    "value": "refreshToken=6IaBSvWhDkvVDOtRX0GGnFlf04iYvTM2C1Sw%2FhTl; Path=/; Expires=Wed, 29 Jan 2025 17:17:06 GMT; HttpOnly; Secure; SameSite=None"
+                  },
+                  "sessionId": {
+                    "value": "sessionId=j%3A%226772d59258e8aa0c0aaa751d%22; Path=/; Expires=Wed, 29 Jan 2025 17:17:06 GMT; HttpOnly; Secure; SameSite=None"
                   }
                 }
               }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully refreshed user session.",
+            },
             "content": {
               "application/json": {
                 "schema": {
@@ -782,7 +819,7 @@
                       "properties": {
                         "accessToken": {
                           "type": "string",
-                          "description": "Access token.",
+                          "description": "New access token for accessing protected resources.",
                           "example": "pJK+TbhNzRIz1BVL9rf4JXrvuYM4ecbdaoRf+22v"
                         },
                         "user": {
@@ -811,12 +848,8 @@
         ],
         "summary": "User logout",
         "operationId": "logoutUser",
-        "description": "Logs the user out of the system.",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "description": "Logs the user out of the system by clearing session-related cookies.",
+        "security": [],
         "parameters": [
           {
             "in": "cookie",
@@ -825,24 +858,33 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "674c7ea11a75750f5f9b86d4"
+              "example": "j%3A%226772d59258e8aa0c0aaa751d%22"
+            }
+          },
+          {
+            "in": "cookie",
+            "name": "refreshToken",
+            "description": "Refresh token for session renewal.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "6IaBSvWhDkvVDOtRX0GGnFlf04iYvTM2C1Sw%2FhTl"
             }
           }
         ],
         "responses": {
           "204": {
-            "description": "Successfully user logout. No content returned."
+            "description": "Successfully logged out. No content returned."
           },
           "400": {
-            "description": "Bad request.",
+            "description": "Bad request. Missing or invalid session ID.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "required": [
                     "status",
-                    "message",
-                    "data"
+                    "message"
                   ],
                   "properties": {
                     "status": {
@@ -852,22 +894,8 @@
                     },
                     "message": {
                       "type": "string",
-                      "description": "General error name.",
-                      "example": "BadRequestError"
-                    },
-                    "data": {
-                      "type": "object",
-                      "description": "Details about the error.",
-                      "required": [
-                        "message"
-                      ],
-                      "properties": {
-                        "message": {
-                          "type": "string",
-                          "description": "Error message.",
-                          "example": "Session ID is required"
-                        }
-                      }
+                      "description": "Error message.",
+                      "example": "Session ID is required"
                     }
                   }
                 }

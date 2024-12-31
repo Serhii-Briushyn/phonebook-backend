@@ -2,31 +2,44 @@ tags:
   - Auth
 summary: Refresh user session
 operationId: refreshUserSession
-description: Refreshes the user session and generates a new access token.
+description: Refreshes the user session, generates a new access token, and updates cookies.
 security:
   - bearerAuth: []
-requestBody:
-  description: Refresh token and session ID.
-  required: true
-  content:
-    application/json:
-      schema:
-        type: object
-        required:
-          - sessionId
-          - refreshToken
-        properties:
-          sessionId:
-            type: string
-            description: ID of the current user session.
-            example: "674c7ea11a75750f5f9b86d4"
-          refreshToken:
-            type: string
-            description: Valid refresh token for session renewal.
-            example: "pJK+TbhNzRIz1BVL9rf4JXrvuYM4ecbdaoRf+22v"
+parameters:
+  - name: Authorization
+    in: header
+    required: true
+    description: Bearer token containing the current (possibly expired) access token.
+    schema:
+      type: string
+      example: "Bearer jrHzFR20mDmYP+VB9KZTEslEjFyFkmoDFnOOZPUcU"
+  - name: sessionId
+    in: cookie
+    required: true
+    description: HttpOnly cookie containing the session ID for the current user session. It is used to identify the session in the database.
+    schema:
+      type: string
+      example: "j%3A%226772d59258e8aa0c0aaa751d%22"
+  - name: refreshToken
+    in: cookie
+    required: true
+    description: HttpOnly cookie containing the refresh token for generating a new access token. It is securely stored and not accessible via JavaScript.
+    schema:
+      type: string
+      example: "6IaBSvWhDkvVD0tRX0GGnFlf04iYvTM2C1Sw%2FhTl"
 responses:
   "200":
-    description: Successfully refreshed user session.
+    description: Successfully refreshed user session. New cookies are set in the response.
+    headers:
+      Set-Cookie:
+        description: Updated cookies with new `refreshToken` and `sessionId`.
+        schema:
+          type: string
+        examples:
+          refreshToken:
+            value: "refreshToken=6IaBSvWhDkvVDOtRX0GGnFlf04iYvTM2C1Sw%2FhTl; Path=/; Expires=Wed, 29 Jan 2025 17:17:06 GMT; HttpOnly; Secure; SameSite=None"
+          sessionId:
+            value: "sessionId=j%3A%226772d59258e8aa0c0aaa751d%22; Path=/; Expires=Wed, 29 Jan 2025 17:17:06 GMT; HttpOnly; Secure; SameSite=None"
     content:
       application/json:
         schema:
@@ -47,7 +60,7 @@ responses:
               properties:
                 accessToken:
                   type: string
-                  description: Access token.
+                  description: New access token for accessing protected resources.
                   example: "pJK+TbhNzRIz1BVL9rf4JXrvuYM4ecbdaoRf+22v"
                 user:
                   $ref: ../../../components/schemas/user.yaml
